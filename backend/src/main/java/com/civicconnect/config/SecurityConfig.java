@@ -52,8 +52,20 @@ public class SecurityConfig {
                 // Allow other public endpoints
                 .requestMatchers("/users/email/**").permitAll()
                 .requestMatchers("/complaints/complaint-id/**").permitAll()
+                // All authenticated endpoints - accessible with valid Bearer token
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/complaints/citizen/**").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/complaints/**").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/complaints/**").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.PUT, "/complaints/**").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/complaints/**").authenticated()
                 // All other requests require authentication
                 .anyRequest().authenticated()
+            )
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    System.out.println("[Security] ✗ Authentication failed for: " + request.getRequestURI());
+                    response.sendError(401, "Unauthorized");
+                })
             )
             .httpBasic(basic -> {});
 

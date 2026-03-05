@@ -16,14 +16,19 @@ const CitizenDashboard = () => {
 
   useEffect(() => {
     if (user) {
-      console.log("Fetching complaints for user:", user);
+      console.log("[Dashboard] ✓ User loaded from context:", user);
+      console.log("[Dashboard] Token in localStorage:", localStorage.getItem("token") ? "✓ YES" : "✗ NO");
       complaintService.getMyComplaints(user.id).then((data) => {
-        console.log("Complaints received:", data);
+        console.log("[Dashboard] ✓ Complaints received:", data.length, "items");
         setComplaints(data);
+        setLoading(false);
+      }).catch((error) => {
+        console.error("[Dashboard] ✗ Error loading complaints:", error);
         setLoading(false);
       });
     } else {
-      console.warn("No user found in CitizenDashboard context");
+      console.warn("[Dashboard] ✗ No user found in context");
+      setLoading(false);
     }
   }, [user]);
 

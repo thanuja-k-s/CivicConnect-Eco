@@ -5,13 +5,17 @@ import { mapComplaint } from "./mappingUtils";
 export const complaintService = {
   async getMyComplaints(citizenId: string): Promise<Complaint[]> {
     try {
+      console.log(`[ComplaintService] Fetching complaints for citizen ID: ${citizenId}`);
       // silent401: background fetch — don't logout user if this fails
       const response = await api.get(`/complaints/citizen/${citizenId}`, {
         silent401: true,
       });
-      return Array.isArray(response.data) ? response.data.map(mapComplaint) : [];
+      console.log(`[ComplaintService] ✓ Response received:`, response.status, response.data);
+      const result = Array.isArray(response.data) ? response.data.map(mapComplaint) : [];
+      console.log(`[ComplaintService] ✓ Mapped complaints:`, result.length, "items");
+      return result;
     } catch (error) {
-      console.error("Error fetching complaints:", error);
+      console.error("[ComplaintService] ✗ Error fetching complaints:", error);
       return [];
     }
   },
@@ -82,6 +86,48 @@ export const complaintService = {
     }
 
     return undefined;
+  },
+
+  async getAllComplaints(): Promise<Complaint[]> {
+    try {
+      console.log("[ComplaintService] Fetching all complaints for workers");
+      const response = await api.get(`/complaints`);
+      const result = Array.isArray(response.data) ? response.data.map(mapComplaint) : [];
+      console.log("[ComplaintService] ✓ All complaints fetched:", result.length, "items");
+      return result;
+    } catch (error) {
+      console.error("[ComplaintService] ✗ Error fetching all complaints:", error);
+      return [];
+    }
+  },
+
+  async updateComplaintStatus(id: string, status: string, resolutionNotes?: string): Promise<Complaint | undefined> {
+    try {
+      console.log(`[ComplaintService] Updating complaint ${id} status to ${status}`);
+      const payload = {
+        status,
+        resolutionNotes: resolutionNotes || "",
+      };
+      console.log("[ComplaintService] Payload:", payload);
+      const response = await api.put(`/complaints/${id}/status`, payload);
+      console.log(`[ComplaintService] ✓ Complaint updated:`, response.data);
+      return response.data ? mapComplaint(response.data) : undefined;
+    } catch (error) {
+      console.error("[ComplaintService] ✗ Error updating complaint:", error);
+      throw error;
+    }
+  },
+
+  async resolveComplaint(id: string, notes: string): Promise<Complaint | undefined> {
+    try {
+      console.log(`[ComplaintService] Resolving complaint ${id}`);
+      const response = await api.post(`/complaints/${id}/resolve`, notes);
+      console.log(`[ComplaintService] ✓ Complaint resolved:`, response.data);
+      return response.data ? mapComplaint(response.data) : undefined;
+    } catch (error) {
+      console.error("[ComplaintService] ✗ Error resolving complaint:", error);
+      throw error;
+    }
   },
 };
 

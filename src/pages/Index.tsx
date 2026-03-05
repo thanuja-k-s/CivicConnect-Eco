@@ -12,8 +12,6 @@ import {
   UserCheck,
   CheckCircle2,
   Users,
-  ClipboardCheck,
-  Wrench,
 } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -32,12 +30,7 @@ const steps = [
   { icon: CheckCircle2, title: "Issue Resolved", desc: "Worker resolves and updates the status" },
 ];
 
-const stats = [
-  { value: "12,450+", label: "Complaints Resolved", icon: ClipboardCheck },
-  { value: "340+", label: "Active Workers", icon: Wrench },
-  { value: "50,000+", label: "Registered Citizens", icon: Users },
-  { value: "98%", label: "Satisfaction Rate", icon: CheckCircle2 },
-];
+
 
 const Index = () => (
   <div>
@@ -112,37 +105,7 @@ const Index = () => (
       </div>
     </section>
 
-    {/* Stats */}
-    <section className="py-16 bg-navy text-navy-foreground">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
-          {stats.map((stat, i) => (
-            <div key={i} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.1}s` }}>
-              <stat.icon className="h-8 w-8 mx-auto mb-2 text-saffron" />
-              <div className="text-3xl font-extrabold">{stat.value}</div>
-              <div className="text-sm text-navy-foreground/70 mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
 
-    {/* Demo credentials */}
-    <section className="py-10 bg-background">
-      <div className="container mx-auto px-4 max-w-xl">
-        <Card className="border-saffron/30">
-          <CardContent className="pt-6">
-            <h3 className="font-bold text-lg mb-3 text-center">🔑 Demo Login Credentials</h3>
-            <div className="space-y-2 text-sm">
-              <p><strong>Citizen:</strong> citizen@demo.com</p>
-              <p><strong>Admin:</strong> admin@demo.com</p>
-              <p><strong>Worker:</strong> worker@demo.com</p>
-              <p className="text-muted-foreground mt-2 text-xs">Password: any (mock auth)</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
   </div>
 );
 

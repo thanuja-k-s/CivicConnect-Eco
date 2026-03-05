@@ -21,6 +21,9 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+    console.log(`[API Interceptor] ✓ Token added for ${config.method?.toUpperCase()} ${config.url}`);
+  } else {
+    console.warn(`[API Interceptor] ✗ NO TOKEN FOUND! Request: ${config.method?.toUpperCase()} ${config.url}`);
   }
   return config;
 });

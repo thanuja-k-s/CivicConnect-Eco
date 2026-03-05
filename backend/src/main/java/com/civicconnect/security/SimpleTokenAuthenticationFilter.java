@@ -9,7 +9,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SimpleTokenAuthenticationFilter extends OncePerRequestFilter {
 
@@ -18,24 +19,43 @@ public class SimpleTokenAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         
         String authHeader = request.getHeader("Authorization");
+        String path = request.getRequestURI();
+        String method = request.getMethod();
+        
+        System.out.println("[Auth Filter] " + method + " " + path);
         
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // Remove "Bearer " prefix
-            
-            if (!token.isEmpty()) {
-                // Accept any non-empty token as valid for demo purposes
-                // In production, validate the token properly and extract user roles
-                // For now, grant a generic USER authority to mark the principal as authenticated
-                UsernamePasswordAuthenticationToken auth = 
-                    new UsernamePasswordAuthenticationToken(
-                        token, 
-                        null, 
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
-                    );
-                SecurityContextHolder.getContext().setAuthentication(auth);
+            try {
+                String token = authHeader.substring(7).trim();
+                
+                if (!token.isEmpty()) {
+                    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                    authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                    authorities.add(new SimpleGrantedAuthority("ROLE_CITIZEN"));
+                    authorities.add(new SimpleGrantedAuthority("ROLE_WORKER"));
+                    
+                    UsernamePasswordAuthenticationToken authentication = 
+                        new UsernamePasswordAuthenticationToken(
+                            token,
+                            null,
+                            authorities
+                        );
+                    
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    System.out.println("[Auth Filter] ✓ Token authenticated for: " + method + " " + path);
+                }
+            } catch (Exception e) {
+                System.out.println("[Auth Filter] ✗ Authentication error: " + e.getMessage());
+                e.printStackTrace();
             }
+        } else if (!path.contains("/auth/") && !path.contains("/users/email/") && !path.contains("/complaints/complaint-id/")) {
+            System.out.println("[Auth Filter] ⚠ No Bearer token for protected endpoint: " + method + " " + path);
         }
         
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
     }
 }

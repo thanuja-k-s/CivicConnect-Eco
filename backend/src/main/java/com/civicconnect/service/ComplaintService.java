@@ -103,6 +103,16 @@ public class ComplaintService {
         return complaintRepository.save(complaint);
     }
 
+    public Complaint updateStatus(Long id, String status, String resolutionNotes) {
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Complaint not found"));
+        complaint.setStatus(status);
+        if (resolutionNotes != null && !resolutionNotes.isEmpty()) {
+            complaint.setResolutionNotes(resolutionNotes);
+        }
+        return complaintRepository.save(complaint);
+    }
+
     public Complaint resolveComplaint(Long complaintId, String resolutionNotes) {
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() -> new RuntimeException("Complaint not found"));

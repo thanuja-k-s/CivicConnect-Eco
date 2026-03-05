@@ -147,45 +147,7 @@ const ReportIssue = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Enter address (e.g., New Delhi, India)"
-                className="mb-3"
               />
-              <div className="grid grid-cols-2 gap-3 mb-3">
-                <div>
-                  <Label className="text-xs">Latitude</Label>
-                  <Input
-                    type="number"
-                    step="0.0001"
-                    value={lat}
-                    onChange={(e) => setLat(parseFloat(e.target.value) || 28.6139)}
-                    placeholder="Latitude"
-                    className="text-sm"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Longitude</Label>
-                  <Input
-                    type="number"
-                    step="0.0001"
-                    value={lng}
-                    onChange={(e) => setLng(parseFloat(e.target.value) || 77.209)}
-                    placeholder="Longitude"
-                    className="text-sm"
-                  />
-                </div>
-              </div>
-              <div className="rounded-lg overflow-hidden border bg-gray-100">
-                <iframe
-                  title="Location Map"
-                  width="100%"
-                  height="250"
-                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01},${lat - 0.01},${lng + 0.01},${lat + 0.01}&layer=mapnik&marker=${lat},${lng}`}
-                  className="border-0"
-                  loading="lazy"
-                />
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                📍 Current: {lat.toFixed(4)}, {lng.toFixed(4)}
-              </p>
             </div>
             <Button type="submit" className="w-full bg-saffron text-saffron-foreground hover:bg-saffron/90" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

@@ -31,8 +31,12 @@ const Navbar = () => {
   const navLinks = (
     <>
       <Link to="/" className="hover:text-saffron transition-colors" onClick={() => setMobileOpen(false)}>Home</Link>
-      <Link to="/report" className="hover:text-saffron transition-colors" onClick={() => setMobileOpen(false)}>Report Issue</Link>
-      <Link to="/track" className="hover:text-saffron transition-colors" onClick={() => setMobileOpen(false)}>Track Complaint</Link>
+      {user?.role !== "worker" && (
+        <>
+          <Link to="/report" className="hover:text-saffron transition-colors" onClick={() => setMobileOpen(false)}>Report Issue</Link>
+          <Link to="/track" className="hover:text-saffron transition-colors" onClick={() => setMobileOpen(false)}>Track Complaint</Link>
+        </>
+      )}
       {isAuthenticated ? (
         <>
           <Link to={dashboardPath} className="hover:text-saffron transition-colors" onClick={() => setMobileOpen(false)}>Dashboard</Link>

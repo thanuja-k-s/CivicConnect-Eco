@@ -1,6 +1,7 @@
 package com.civicconnect.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,6 +16,7 @@ public class Complaint {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User citizen;
 
     @Column(nullable = false)
@@ -43,6 +45,7 @@ public class Complaint {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_worker_id")
+    @JsonIgnore
     private User assignedWorker;
 
     @Column(columnDefinition = "TEXT")
@@ -192,5 +195,15 @@ public class Complaint {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    // Get assigned worker name without exposing the entire User object
+    public String getAssignedWorkerName() {
+        return assignedWorker != null ? assignedWorker.getFullName() : null;
+    }
+
+    // Get citizen name without exposing the entire User object
+    public String getCitizenName() {
+        return citizen != null ? citizen.getFullName() : null;
     }
 }

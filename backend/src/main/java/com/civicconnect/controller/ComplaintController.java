@@ -1,6 +1,7 @@
 package com.civicconnect.controller;
 
 import com.civicconnect.dto.CreateComplaintDTO;
+import com.civicconnect.dto.UpdateStatusDTO;
 import com.civicconnect.entity.Complaint;
 import com.civicconnect.service.ComplaintService;
 import org.springframework.http.HttpStatus;
@@ -65,6 +66,28 @@ public class ComplaintController {
     @PutMapping("/{id}")
     public ResponseEntity<Complaint> updateComplaint(@PathVariable Long id, @RequestBody Complaint complaintDetails) {
         return ResponseEntity.ok(complaintService.updateComplaint(id, complaintDetails));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Complaint> updateStatus(
+            @PathVariable Long id,
+            @RequestBody UpdateStatusDTO statusUpdate) {
+        try {
+            System.out.println("[ComplaintController] ===== UPDATE STATUS REQUEST =====");
+            System.out.println("[ComplaintController] Complaint ID: " + id);
+            System.out.println("[ComplaintController] New Status: " + statusUpdate.getStatus());
+            System.out.println("[ComplaintController] Resolution Notes: " + statusUpdate.getResolutionNotes());
+            
+            Complaint updated = complaintService.updateStatus(id, statusUpdate.getStatus(), statusUpdate.getResolutionNotes());
+            
+            System.out.println("[ComplaintController] ✓ Successfully updated complaint " + id);
+            System.out.println("[ComplaintController] Updated status in DB: " + updated.getStatus());
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            System.out.println("[ComplaintController] ✗ Error updating status: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     @PostMapping("/{complaintId}/assign/{workerId}")
