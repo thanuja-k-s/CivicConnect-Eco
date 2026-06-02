@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+package-lock.json
+bun.lockb
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+backend/target/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Environment & Sensitive Files
+.env
+.env.local
+.env.*.local
+backend/src/main/resources/application.properties
+backend/src/main/resources/application-*.properties
+
+# Java specific
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.classpath
+.project
+.settings/
+.metadata/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Misc
+.cache/
+.parcel-cache/
+*.pid
+*.seed
