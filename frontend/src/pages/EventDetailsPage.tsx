@@ -21,6 +21,31 @@ const EventDetailsPage = () => {
   const [actionLoading, setActionLoading] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
 
+  const isAttendanceWindowOpen = (event: NgoEvent) => {
+    const eventDate = new Date(event.date);
+    if (Number.isNaN(eventDate.getTime())) return false;
+
+    const startParts = event.startTime?.split(":").map(Number);
+    const endParts = event.endTime?.split(":").map(Number);
+
+    if (startParts?.length === 2) {
+      eventDate.setHours(startParts[0], startParts[1], 0, 0);
+    } else {
+      eventDate.setHours(0, 0, 0, 0);
+    }
+
+    const now = new Date();
+    if (now < eventDate) return false;
+
+    if (endParts?.length === 2) {
+      const eventEnd = new Date(event.date);
+      eventEnd.setHours(endParts[0], endParts[1], 0, 0);
+      return now <= eventEnd;
+    }
+
+    return event.status === "ONGOING" || event.status === "COMPLETED" ? false : now >= eventDate;
+  };
+
   useEffect(() => {
     if (!id) return;
     const load = async () => {
@@ -102,6 +127,8 @@ const EventDetailsPage = () => {
 
   const isFull = event.currentParticipants >= event.maxParticipants;
   const fillPercent = Math.round((event.currentParticipants / event.maxParticipants) * 100);
+  const canVerifyAttendance = participationStatus === "REGISTERED" && isAttendanceWindowOpen(event);
+  const attendanceClosed = participationStatus === "REGISTERED" && !canVerifyAttendance;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -225,12 +252,23 @@ const EventDetailsPage = () => {
                   <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2.5 rounded-lg text-sm font-medium">
                     <CheckCircle2 className="h-4 w-4" /> You are registered for this event
                   </div>
-                  {(event.status === "UPCOMING" || event.status === "ONGOING") && (
-                    <Button onClick={handleGpsAttendance} disabled={gpsLoading}
-                      className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white h-11">
-                      {gpsLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Getting GPS...</> :
-                        <><Navigation className="mr-2 h-4 w-4" /> Verify Attendance via GPS (+{event.rewardPoints} pts)</>}
-                    </Button>
+                  <Button
+                    onClick={handleGpsAttendance}
+                    disabled={gpsLoading || !canVerifyAttendance}
+                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white h-11 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {gpsLoading ? (
+                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Getting GPS...</>
+                    ) : canVerifyAttendance ? (
+                      <><Navigation className="mr-2 h-4 w-4" /> Verify Attendance via GPS (+{event.rewardPoints} pts)</>
+                    ) : (
+                      <><Clock className="mr-2 h-4 w-4" /> Attendance verification opens during the event</>
+                    )}
+                  </Button>
+                  {attendanceClosed && (
+                    <p className="text-xs text-gray-500 px-1">
+                      You can verify attendance only on the event date and within the scheduled time.
+                    </p>
                   )}
                   <Button onClick={handleCancel} disabled={actionLoading} variant="outline"
                     className="w-full border-red-200 text-red-500 hover:bg-red-50">

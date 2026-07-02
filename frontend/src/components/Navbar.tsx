@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { notificationService } from "@/services/notificationService";
-import { Menu, X, Sun, Moon, Shield, Leaf, Bell, Trophy, TreePine } from "lucide-react";
+import { Menu, X, Shield, Leaf, Bell, Trophy, TreePine } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const Navbar = () => {
@@ -11,7 +11,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [dark, setDark] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
   // Poll notification badge count when authenticated
@@ -26,11 +25,6 @@ const Navbar = () => {
     const interval = setInterval(fetch, 30000); // refresh every 30s
     return () => clearInterval(interval);
   }, [isAuthenticated, user]);
-
-  const toggleDark = () => {
-    setDark(!dark);
-    document.documentElement.classList.toggle("dark");
-  };
 
   const handleLogout = () => {
     logout();
@@ -129,16 +123,10 @@ const Navbar = () => {
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-5 text-sm font-medium">
           {navLinks}
-          <button onClick={toggleDark} className="p-2 rounded-full hover:bg-white/10 transition-colors">
-            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
         </div>
 
         {/* Mobile toggle */}
         <div className="flex md:hidden items-center gap-2">
-          <button onClick={toggleDark} className="p-2">
-            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
           <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2">
             {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>

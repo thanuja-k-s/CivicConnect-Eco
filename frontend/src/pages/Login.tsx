@@ -10,7 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Shield } from "lucide-react";
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -58,7 +58,7 @@ const Login = () => {
         <CardHeader className="text-center">
           <Shield className="h-12 w-12 text-saffron mx-auto mb-2" />
           <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Login to your Civic Connect account</CardDescription>
+          <CardDescription>Login to your CivicConnect Eco account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -86,6 +86,4 @@ const Login = () => {
       </Card>
     </div>
   );
-};
-
-export default Login;
+}

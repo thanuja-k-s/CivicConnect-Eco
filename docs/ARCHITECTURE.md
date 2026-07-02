@@ -1,8 +1,8 @@
-# Civic Connect - Architecture Documentation
+# CivicConnect Eco - Architecture Documentation
 
 ## System Overview
 
-Civic Connect is a full-stack web application designed to streamline citizen complaint management and municipal issue tracking. It follows a modern layered architecture with clear separation of concerns.
+CivicConnect Eco is a full-stack web application designed to streamline citizen complaint management, eco event coordination, volunteer participation, and municipal issue tracking. It follows a modern layered architecture with clear separation of concerns.
 
 ## Architecture Diagram
 

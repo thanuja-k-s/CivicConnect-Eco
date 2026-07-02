@@ -1,6 +1,6 @@
-# Civic Connect - API Documentation
+# CivicConnect Eco - API Documentation
 
-Complete documentation for all REST API endpoints in Civic Connect.
+Complete documentation for all REST API endpoints in CivicConnect Eco.
 
 ## Base URL
 

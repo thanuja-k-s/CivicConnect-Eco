@@ -1,13 +1,14 @@
-# Civic Connect
+# CivicConnect Eco
 
-A modern full-stack web application for managing citizen complaints and municipal civic issues. Built with React, TypeScript, Spring Boot, and PostgreSQL.
+A modern full-stack web application for managing citizen complaints, eco events, volunteer participation, notifications, and municipal civic issues. Built with React, TypeScript, Spring Boot, and PostgreSQL.
 
 ## 🎯 Overview
 
-Civic Connect streamlines the complaint management process by providing:
+CivicConnect Eco streamlines civic and environmental engagement by providing:
 - **Citizens**: Easy-to-use interface to report issues and track their status
 - **Workers**: Dashboard to manage and resolve assigned complaints
 - **Admins**: System-wide oversight, user management, and analytics
+- **NGOs and eco clubs**: Tools to register organizations, create events, and engage volunteers
 
 ## 🏗️ Project Structure
 

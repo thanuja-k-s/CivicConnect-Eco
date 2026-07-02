@@ -1,8 +1,8 @@
-# Civic Connect - Backend Development Guide
+# CivicConnect Eco - Backend Development Guide
 
 ## Overview
 
-The Civic Connect backend is a Spring Boot REST API that handles authentication, complaint management, user management, and admin operations. It uses PostgreSQL for data persistence and JWT for stateless authentication.
+The CivicConnect Eco backend is a Spring Boot REST API that handles authentication, complaint management, eco events, NGO management, participation, notifications, gamification, user management, and admin operations. It uses PostgreSQL for data persistence and JWT for stateless authentication.
 
 ## Project Structure
 

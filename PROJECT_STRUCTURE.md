@@ -1,4 +1,4 @@
-# Civic Connect - Complete Setup Guide
+# CivicConnect Eco - Complete Setup Guide
 
 ## Project Structure
 

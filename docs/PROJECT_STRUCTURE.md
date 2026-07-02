@@ -1,4 +1,4 @@
-# Civic Connect - Project Structure
+# CivicConnect Eco - Project Structure
 
 ## Directory Overview
 

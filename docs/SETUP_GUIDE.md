@@ -1,6 +1,6 @@
-# Civic Connect - Complete Setup Guide
+# CivicConnect Eco - Complete Setup Guide
 
-This guide provides step-by-step instructions to set up and run the Civic Connect application locally.
+This guide provides step-by-step instructions to set up and run the CivicConnect Eco application locally.
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)

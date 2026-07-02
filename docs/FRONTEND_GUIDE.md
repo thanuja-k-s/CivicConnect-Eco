@@ -1,8 +1,8 @@
-# Civic Connect - Frontend Development Guide
+# CivicConnect Eco - Frontend Development Guide
 
 ## Overview
 
-The Civic Connect frontend is a React-based application built with TypeScript and Vite. It provides user interfaces for citizens, workers, and administrators to manage complaints and civic issues.
+The CivicConnect Eco frontend is a React-based application built with TypeScript and Vite. It provides user interfaces for citizens, workers, administrators, and NGO partners to manage complaints, eco events, notifications, and environmental impact flows.
 
 ## Project Structure
 
