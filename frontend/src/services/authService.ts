@@ -37,7 +37,7 @@ export const authService = {
     email: string;
     phone: string;
     password: string;
-    role: "citizen" | "worker";
+    role: "citizen" | "worker" | "ngo";
   }): Promise<User> {
     try {
       const response = await api.post("/auth/register", data);

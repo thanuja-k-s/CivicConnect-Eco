@@ -18,6 +18,16 @@ import TrackComplaint from "./pages/TrackComplaint";
 import AdminDashboard from "./pages/AdminDashboard";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import NotFound from "./pages/NotFound";
+// ── NGO / Eco Club Module ──────────────────────────────────────────────────
+import NgoRegistrationPage from "./pages/NgoRegistrationPage";
+import NgoDashboard from "./pages/NgoDashboard";
+import CreateEventPage from "./pages/CreateEventPage";
+import EventDiscoveryPage from "./pages/EventDiscoveryPage";
+import EventDetailsPage from "./pages/EventDetailsPage";
+import LeaderboardPage from "./pages/LeaderboardPage";
+import BadgesPage from "./pages/BadgesPage";
+import EcoImpactDashboard from "./pages/EcoImpactDashboard";
+import NotificationsPage from "./pages/NotificationsPage";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +67,7 @@ const App = () => (
           <AuthRedirectHandler />
           <Layout>
             <Routes>
+              {/* ── Existing Routes ──────────────────────────────────── */}
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -74,6 +85,36 @@ const App = () => (
               <Route path="/worker" element={
                 <PrivateRoute roles={["worker"]}><WorkerDashboard /></PrivateRoute>
               } />
+
+              {/* ── NGO / Eco Module – Public ─────────────────────── */}
+              <Route path="/events" element={<EventDiscoveryPage />} />
+              <Route path="/events/:id" element={<EventDetailsPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route path="/badges" element={<BadgesPage />} />
+              <Route path="/eco-impact" element={<EcoImpactDashboard />} />
+
+              {/* ── NGO / Eco Module – Authenticated ─────────────── */}
+              <Route path="/notifications" element={
+                <PrivateRoute roles={["citizen", "admin", "worker", "ngo"]}>
+                  <NotificationsPage />
+                </PrivateRoute>
+              } />
+              <Route path="/ngo/register" element={
+                <PrivateRoute roles={["citizen", "admin", "ngo"]}>
+                  <NgoRegistrationPage />
+                </PrivateRoute>
+              } />
+              <Route path="/ngo/dashboard" element={
+                <PrivateRoute roles={["citizen", "admin", "ngo"]}>
+                  <NgoDashboard />
+                </PrivateRoute>
+              } />
+              <Route path="/ngo/events/create" element={
+                <PrivateRoute roles={["citizen", "admin", "ngo"]}>
+                  <CreateEventPage />
+                </PrivateRoute>
+              } />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
@@ -84,4 +125,3 @@ const App = () => (
 );
 
 export default App;
-

@@ -34,7 +34,7 @@ civic-connect/
 │   ├── pom.xml                        # Maven configuration
 │   ├── Dockerfile                     # Docker image for backend
 │   ├── BACKEND_SETUP.md               # Backend setup instructions
-│   └── init_users.sql                 # Database initialization script
+│   └── SQL seed instructions          # Database initialization script
 │
 ├── docs/                              # Documentation
 │   ├── PROJECT_STRUCTURE.md           # This file
@@ -70,7 +70,7 @@ civic-connect/
 
 ### Database
 - **PostgreSQL** running in Docker
-- Initialized with `init_users.sql` script
+- Initialized with the SQL seed instructions documented in `docs/SETUP_GUIDE.md`
 - Configured in `docker-compose.yml`
 
 ### Configuration Files

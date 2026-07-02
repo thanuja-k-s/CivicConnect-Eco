@@ -58,7 +58,7 @@ const Login = () => {
         <CardHeader className="text-center">
           <Shield className="h-12 w-12 text-saffron mx-auto mb-2" />
           <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Login to your NagarSeva account</CardDescription>
+          <CardDescription>Login to your Civic Connect account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

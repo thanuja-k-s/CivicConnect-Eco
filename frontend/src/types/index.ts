@@ -1,4 +1,149 @@
-export type UserRole = "citizen" | "admin" | "worker";
+export type UserRole = "citizen" | "admin" | "worker" | "ngo";
+
+// ─── NGO Types ────────────────────────────────────────────────────────────────
+export type NgoStatus = "PENDING" | "ACTIVE" | "REJECTED" | "SUSPENDED";
+export type OrgType = "NGO" | "ECO_CLUB" | "COLLEGE_CLUB" | "VOLUNTEER_ORG";
+
+export interface Ngo {
+  id: number;
+  name: string;
+  registrationNumber: string;
+  organizationType: OrgType;
+  contactPersonName: string;
+  email: string;
+  phone: string;
+  address: string;
+  description: string;
+  website?: string;
+  documentUrl?: string;
+  status: NgoStatus;
+  createdByUserId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── Event Types ──────────────────────────────────────────────────────────────
+export type EventStatus = "UPCOMING" | "ONGOING" | "COMPLETED" | "CANCELLED";
+export type EventType =
+  | "TREE_PLANTATION" | "BEACH_CLEANUP" | "LAKE_CLEANUP" | "ROAD_CLEANUP"
+  | "PLASTIC_COLLECTION" | "RECYCLING_WORKSHOP" | "AWARENESS_CAMPAIGN"
+  | "E_WASTE_COLLECTION" | "WATER_CONSERVATION" | "COMMUNITY_CLEANUP"
+  | "WILDLIFE_PROTECTION" | "OTHER";
+
+export interface NgoEvent {
+  id: number;
+  title: string;
+  description: string;
+  eventType: EventType;
+  bannerImage?: string;
+  date: string;
+  startTime?: string;
+  endTime?: string;
+  locationName: string;
+  latitude: number;
+  longitude: number;
+  maxParticipants: number;
+  currentParticipants: number;
+  rewardPoints: number;
+  requiredMaterials?: string;
+  organizerNotes?: string;
+  status: EventStatus;
+  ngoId?: number;
+  ngoName?: string;
+  distanceKm?: number; // populated on frontend for nearby events
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── Participation Types ───────────────────────────────────────────────────────
+export type ParticipationStatus = "REGISTERED" | "ATTENDED" | "COMPLETED" | "CANCELLED";
+
+export interface Participation {
+  id: number;
+  userId: number;
+  userName: string;
+  eventId: number;
+  eventTitle: string;
+  status: ParticipationStatus;
+  joinedAt: string;
+  attendedAt?: string;
+  distanceFromEvent?: number;
+}
+
+// ─── Badge Types ──────────────────────────────────────────────────────────────
+export interface Badge {
+  id: number;
+  name: string;
+  description: string;
+  requiredPoints: number;
+  icon: string;
+  badgeCode: string;
+  sortOrder: number;
+}
+
+export interface UserBadge {
+  id: number;
+  badge: Badge;
+  awardedAt: string;
+}
+
+// ─── Leaderboard Types ────────────────────────────────────────────────────────
+export interface LeaderboardEntry {
+  rank: number;
+  userId: number;
+  userName: string;
+  totalPoints: number;
+  topBadgeName?: string;
+  topBadgeIcon?: string;
+  attendedEvents: number;
+}
+
+// ─── Eco Points Types ─────────────────────────────────────────────────────────
+export interface EcoPoints {
+  userId: number;
+  userName: string;
+  totalPoints: number;
+  weeklyPoints: number;
+  monthlyPoints: number;
+  lifetimePoints: number;
+}
+
+export interface EcoPointTransaction {
+  id: number;
+  points: number;
+  reason: string;
+  transactionType: string;
+  createdAt: string;
+}
+
+// ─── Notification Types ───────────────────────────────────────────────────────
+export type NotificationType = "EVENT" | "BADGE" | "COMPLAINT" | "SYSTEM" | "NGO_RECOMMENDATION";
+
+export interface AppNotification {
+  id: number;
+  title: string;
+  message: string;
+  type: NotificationType;
+  isRead: boolean;
+  referenceId?: number;
+  createdAt: string;
+}
+
+// ─── Eco Impact Types ─────────────────────────────────────────────────────────
+export interface EcoImpactStats {
+  totalEvents: number;
+  completedEvents: number;
+  upcomingEvents: number;
+  totalVolunteers: number;
+  treesPlanted: number;
+  wasteCollectedKg: number;
+  plasticRemovedKg: number;
+  volunteerHours: number;
+  complaintsResolved: number;
+  activeNgos: number;
+  co2ReductionEstimateKg: number;
+}
+
 
 export interface User {
   id: string;
@@ -11,13 +156,24 @@ export interface User {
 
 export type ComplaintStatus = "pending" | "assigned" | "in_progress" | "resolved" | "rejected";
 
+/** All 13 supported complaint categories (expanded from original 6) */
 export type ComplaintCategory =
   | "road"
   | "garbage"
   | "water"
   | "drainage"
   | "streetlight"
-  | "illegal-dumping";
+  | "illegal-dumping"
+  | "fire-hazard"
+  | "electricity"
+  | "pollution"
+  | "public-safety"
+  | "tree-fall"
+  | "animal-issue"
+  | "other";
+
+/** AI-assigned priority levels */
+export type PriorityLevel = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 
 export interface Complaint {
   id: string;
@@ -28,7 +184,7 @@ export interface Complaint {
   status: ComplaintStatus;
   image?: string;
   photoUrl?: string; // Backend might use this
-  address?: string; // Backend flat field
+  address?: string;  // Backend flat field
   latitude?: number; // Backend flat field
   longitude?: number; // Backend flat field
   location: {
@@ -43,6 +199,31 @@ export interface Complaint {
   createdAt: string;
   updatedAt: string;
   timeline: TimelineEntry[];
+
+  // ─── FEATURE 1: Voice ──────────────────────────────────────────────────────
+  voiceTranscript?: string;
+  createdFromVoice?: boolean;
+
+  // ─── FEATURE 2: GPS ────────────────────────────────────────────────────────
+  locationAccuracy?: number;
+
+  // ─── FEATURE 3: Camera ────────────────────────────────────────────────────
+  imageUrl?: string;
+  createdFromCamera?: boolean;
+
+  // ─── FEATURE 4: AI Category ───────────────────────────────────────────────
+  aiCategory?: string;
+  aiConfidence?: number;
+
+  // ─── FEATURE 5: AI Priority ───────────────────────────────────────────────
+  priorityLevel?: PriorityLevel;
+  priorityReason?: string;
+
+  // ─── FEATURE 6: Image Analysis ────────────────────────────────────────────
+  imageAnalysisResult?: string; // JSON string from backend
+
+  // ─── Resolved notes ───────────────────────────────────────────────────────
+  resolutionNotes?: string;
 }
 
 export interface TimelineEntry {
@@ -57,4 +238,24 @@ export interface Worker {
   id: string;
   name: string;
   email: string;
+}
+
+/** Result from the AI classifier hook */
+export interface AiClassificationResult {
+  category: ComplaintCategory;
+  confidence: number;  // 0-100
+  priority: PriorityLevel;
+  priorityReason: string;
+  detectedObjects: string[];
+  suggestedCategory?: string;
+  suggestedPriority?: string;
+}
+
+/** Location data captured from the Geolocation API */
+export interface CapturedLocation {
+  lat: number;
+  lng: number;
+  accuracy: number;
+  timestamp: number;
+  address: string;
 }

@@ -85,7 +85,7 @@ backend/
 ├── pom.xml                     # Maven configuration
 ├── Dockerfile                  # Docker image definition
 ├── BACKEND_SETUP.md            # Setup instructions
-└── init_users.sql              # Database initialization
+└── SQL seed instructions       # Database initialization details
 ```
 
 ## Getting Started
@@ -654,8 +654,21 @@ docker run -p 8081:8081 civic-connect-backend
 # Reset database
 psql -U postgres -h localhost -d civic_connect -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
-# Reinitialize
-psql -U postgres -d civic_connect -h localhost -f backend/init_users.sql
+# Reinitialize default users
+```sql
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+UPDATE users
+SET email = 'admin@gmail.com',
+    password = crypt('password', gen_salt('bf')),
+    full_name = 'Admin User',
+    phone_number = '0000000000',
+    role = 'ADMIN',
+    address = 'Local',
+    is_active = true,
+    updated_at = NOW()
+WHERE email = 'admin@civicconnect.com';
+```
 ```
 
 ## Useful Resources

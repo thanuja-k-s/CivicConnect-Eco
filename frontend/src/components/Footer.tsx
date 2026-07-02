@@ -8,7 +8,7 @@ const Footer = () => (
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Shield className="h-6 w-6 text-saffron" />
-            <span className="text-lg font-bold">NagarSeva</span>
+            <span className="text-lg font-bold">Civic Connect</span>
           </div>
           <p className="text-sm text-navy-foreground/70 leading-relaxed">
             An initiative by the Government to empower citizens to report and track civic issues in their locality for faster resolution.
@@ -27,7 +27,7 @@ const Footer = () => (
       </div>
 
       <div className="border-t border-navy-foreground/20 mt-8 pt-6 text-center text-xs text-navy-foreground/50">
-        <p>© 2026 NagarSeva — Government of India. All Rights Reserved.</p>
+        <p>© 2026 Civic Connect — Government of India. All Rights Reserved.</p>
       </div>
     </div>
   </footer>

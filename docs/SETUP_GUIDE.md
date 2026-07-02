@@ -164,8 +164,8 @@ CREATE DATABASE civic_connect;
 
 #### 2. Initialize Schema and Users
 ```bash
-# From the backend directory
-psql -U postgres -d civic_connect -h localhost -f init_users.sql
+# Connect to PostgreSQL and run the admin seed SQL from this guide
+psql -U postgres -d civic_connect -h localhost
 ```
 
 #### 3. Verify Installation
@@ -234,11 +234,11 @@ psql -U postgres -h localhost -d civic_connect
 
 ## Default Credentials
 
-The `init_users.sql` creates these test users:
+The database seed creates these test users:
 
 | Role | Email | Password | ID |
 |------|-------|----------|-----|
-| Admin | admin@demo.com | password | 1 |
+| Admin | admin@gmail.com | password | 1 |
 | Worker | worker@demo.com | password | 2 |
 | Citizen | citizen@demo.com | password | 3 |
 
@@ -355,8 +355,7 @@ psql -U postgres -h localhost -c "\l"
 # Reset database (WARNING: Deletes all data)
 psql -U postgres -h localhost -d civic_connect -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
-# Reinitialize
-psql -U postgres -d civic_connect -h localhost -f backend/init_users.sql
+# Reinitialize by rerunning the seed SQL from this guide
 ```
 
 ### Docker Issues

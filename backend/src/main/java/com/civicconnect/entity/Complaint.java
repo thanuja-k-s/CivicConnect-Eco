@@ -25,8 +25,9 @@ public class Complaint {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    // Extended category list (13 categories including AI-detected ones)
     @Column(nullable = false)
-    private String category; // Road, Garbage, Water, Drainage, Streetlight, Illegal Dumping
+    private String category;
 
     @Column(nullable = false)
     private String status = "PENDING"; // PENDING, IN_PROGRESS, RESOLVED, REJECTED
@@ -40,8 +41,55 @@ public class Complaint {
     @Column(columnDefinition = "DOUBLE PRECISION")
     private Double longitude;
 
+    // ─── FEATURE 2: GPS Accuracy ────────────────────────────────────────────────
+    /** Accuracy of GPS fix in metres */
+    @Column(columnDefinition = "DOUBLE PRECISION")
+    private Double locationAccuracy;
+
     @Column(columnDefinition = "TEXT")
     private String photoUrl;
+
+    // ─── FEATURE 3: Camera-captured image URL ───────────────────────────────────
+    /** Separate URL / Base64 for camera-captured images */
+    @Column(columnDefinition = "TEXT")
+    private String imageUrl;
+
+    // ─── FEATURE 1: Voice Transcript ────────────────────────────────────────────
+    /** Full voice-to-text transcript of the spoken complaint */
+    @Column(columnDefinition = "TEXT")
+    private String voiceTranscript;
+
+    // ─── FEATURE 4: AI Category Detection ──────────────────────────────────────
+    /** AI-detected complaint category (may differ from user-selected category) */
+    @Column(length = 100)
+    private String aiCategory;
+
+    /** Confidence score (0–100) for the AI category prediction */
+    @Column
+    private Integer aiConfidence;
+
+    // ─── FEATURE 5: AI Priority Classification ──────────────────────────────────
+    /** AI-assigned priority: CRITICAL, HIGH, MEDIUM, LOW */
+    @Column(length = 20)
+    private String priorityLevel;
+
+    /** Human-readable reason for the AI priority assignment */
+    @Column(columnDefinition = "TEXT")
+    private String priorityReason;
+
+    // ─── FEATURE 6: Image-Based Issue Analysis ──────────────────────────────────
+    /** JSON string with detected objects, confidence scores, suggestedCategory, suggestedPriority */
+    @Column(columnDefinition = "TEXT")
+    private String imageAnalysisResult;
+
+    // ─── Source Flags ────────────────────────────────────────────────────────────
+    /** True when the complaint description originated from voice recording */
+    @Column
+    private Boolean createdFromVoice = false;
+
+    /** True when the complaint image was captured directly from the device camera */
+    @Column
+    private Boolean createdFromCamera = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_worker_id")
@@ -62,7 +110,7 @@ public class Complaint {
         updatedAt = LocalDateTime.now();
     }
 
-    // Constructors
+    // ─── Constructors ────────────────────────────────────────────────────────────
     public Complaint() {}
 
     public Complaint(String title, String description, String category, String address, User citizen) {
@@ -76,133 +124,88 @@ public class Complaint {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+    // ─── Getters and Setters ─────────────────────────────────────────────────────
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getComplaintId() { return complaintId; }
+    public void setComplaintId(String complaintId) { this.complaintId = complaintId; }
 
-    public String getComplaintId() {
-        return complaintId;
-    }
+    public User getCitizen() { return citizen; }
+    public void setCitizen(User citizen) { this.citizen = citizen; }
 
-    public void setComplaintId(String complaintId) {
-        this.complaintId = complaintId;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public User getCitizen() {
-        return citizen;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setCitizen(User citizen) {
-        this.citizen = citizen;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
-    public String getDescription() {
-        return description;
-    }
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
 
-    public String getCategory() {
-        return category;
-    }
+    public Double getLocationAccuracy() { return locationAccuracy; }
+    public void setLocationAccuracy(Double locationAccuracy) { this.locationAccuracy = locationAccuracy; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public String getPhotoUrl() { return photoUrl; }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 
-    public String getStatus() {
-        return status;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getVoiceTranscript() { return voiceTranscript; }
+    public void setVoiceTranscript(String voiceTranscript) { this.voiceTranscript = voiceTranscript; }
 
-    public String getAddress() {
-        return address;
-    }
+    public String getAiCategory() { return aiCategory; }
+    public void setAiCategory(String aiCategory) { this.aiCategory = aiCategory; }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public Integer getAiConfidence() { return aiConfidence; }
+    public void setAiConfidence(Integer aiConfidence) { this.aiConfidence = aiConfidence; }
 
-    public Double getLatitude() {
-        return latitude;
-    }
+    public String getPriorityLevel() { return priorityLevel; }
+    public void setPriorityLevel(String priorityLevel) { this.priorityLevel = priorityLevel; }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
+    public String getPriorityReason() { return priorityReason; }
+    public void setPriorityReason(String priorityReason) { this.priorityReason = priorityReason; }
 
-    public Double getLongitude() {
-        return longitude;
-    }
+    public String getImageAnalysisResult() { return imageAnalysisResult; }
+    public void setImageAnalysisResult(String imageAnalysisResult) { this.imageAnalysisResult = imageAnalysisResult; }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
+    public Boolean getCreatedFromVoice() { return createdFromVoice; }
+    public void setCreatedFromVoice(Boolean createdFromVoice) { this.createdFromVoice = createdFromVoice; }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
+    public Boolean getCreatedFromCamera() { return createdFromCamera; }
+    public void setCreatedFromCamera(Boolean createdFromCamera) { this.createdFromCamera = createdFromCamera; }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
+    public User getAssignedWorker() { return assignedWorker; }
+    public void setAssignedWorker(User assignedWorker) { this.assignedWorker = assignedWorker; }
 
-    public User getAssignedWorker() {
-        return assignedWorker;
-    }
+    public String getResolutionNotes() { return resolutionNotes; }
+    public void setResolutionNotes(String resolutionNotes) { this.resolutionNotes = resolutionNotes; }
 
-    public void setAssignedWorker(User assignedWorker) {
-        this.assignedWorker = assignedWorker;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public String getResolutionNotes() {
-        return resolutionNotes;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
-    public void setResolutionNotes(String resolutionNotes) {
-        this.resolutionNotes = resolutionNotes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    // Get assigned worker name without exposing the entire User object
+    /** Get assigned worker name without exposing the entire User object */
     public String getAssignedWorkerName() {
         return assignedWorker != null ? assignedWorker.getFullName() : null;
     }
 
-    // Get citizen name without exposing the entire User object
+    /** Get citizen name without exposing the entire User object */
     public String getCitizenName() {
         return citizen != null ? citizen.getFullName() : null;
     }

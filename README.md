@@ -62,8 +62,7 @@ mvn spring-boot:run
 psql -U postgres -h localhost
 CREATE DATABASE civic_connect;
 
-# Initialize
-psql -U postgres -d civic_connect -h localhost -f backend/init_users.sql
+# Initialize default users using the SQL block in docs/SETUP_GUIDE.md
 ```
 
 ## � API Endpoints
@@ -311,11 +310,11 @@ mvn test             # Run tests
 
 ## 📊 Default Credentials
 
-Test with these credentials (created via `init_users.sql`):
+Test with these credentials in the database:
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@demo.com | password |
+| Admin | admin@gmail.com | password |
 | Worker | worker@demo.com | password |
 | Citizen | citizen@demo.com | password |
 

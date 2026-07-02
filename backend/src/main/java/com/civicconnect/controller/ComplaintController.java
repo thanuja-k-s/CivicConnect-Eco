@@ -18,6 +18,8 @@ public class ComplaintController {
         this.complaintService = complaintService;
     }
 
+    // ─── Standard CRUD Endpoints ─────────────────────────────────────────────────
+
     @GetMapping
     public ResponseEntity<List<Complaint>> getAllComplaints() {
         return ResponseEntity.ok(complaintService.getAllComplaints());
@@ -57,6 +59,49 @@ public class ComplaintController {
         return ResponseEntity.ok(complaintService.getComplaintsByCategory(category));
     }
 
+    // ─── FEATURE 5: Priority-Based Endpoints ────────────────────────────────────
+
+    /**
+     * Returns complaints filtered by priority level.
+     * Priority values: CRITICAL, HIGH, MEDIUM, LOW
+     */
+    @GetMapping("/priority/{level}")
+    public ResponseEntity<List<Complaint>> getComplaintsByPriority(@PathVariable String level) {
+        return ResponseEntity.ok(complaintService.getComplaintsByPriority(level.toUpperCase()));
+    }
+
+    // ─── FEATURE 4: AI Category Endpoint ────────────────────────────────────────
+
+    /**
+     * Returns complaints filtered by AI-detected category.
+     */
+    @GetMapping("/ai-category/{category}")
+    public ResponseEntity<List<Complaint>> getComplaintsByAiCategory(@PathVariable String category) {
+        return ResponseEntity.ok(complaintService.getComplaintsByAiCategory(category));
+    }
+
+    // ─── FEATURE 7: Emergency Alert Endpoint ────────────────────────────────────
+
+    /**
+     * Returns all CRITICAL priority complaints for the emergency alert workflow.
+     * Used by admin dashboard to display emergency counter and highlight urgent issues.
+     */
+    @GetMapping("/emergency")
+    public ResponseEntity<List<Complaint>> getEmergencyComplaints() {
+        return ResponseEntity.ok(complaintService.getEmergencyComplaints());
+    }
+
+    /**
+     * Returns all complaints sorted by priority (CRITICAL first).
+     * Used by worker dashboard to show the most urgent work items at the top.
+     */
+    @GetMapping("/sorted-by-priority")
+    public ResponseEntity<List<Complaint>> getAllSortedByPriority() {
+        return ResponseEntity.ok(complaintService.getAllComplaintsByPriority());
+    }
+
+    // ─── Mutation Endpoints ──────────────────────────────────────────────────────
+
     @PostMapping
     public ResponseEntity<Complaint> createComplaint(@RequestBody CreateComplaintDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -77,9 +122,9 @@ public class ComplaintController {
             System.out.println("[ComplaintController] Complaint ID: " + id);
             System.out.println("[ComplaintController] New Status: " + statusUpdate.getStatus());
             System.out.println("[ComplaintController] Resolution Notes: " + statusUpdate.getResolutionNotes());
-            
+
             Complaint updated = complaintService.updateStatus(id, statusUpdate.getStatus(), statusUpdate.getResolutionNotes());
-            
+
             System.out.println("[ComplaintController] ✓ Successfully updated complaint " + id);
             System.out.println("[ComplaintController] Updated status in DB: " + updated.getStatus());
             return ResponseEntity.ok(updated);
