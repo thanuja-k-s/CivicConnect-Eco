@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { notificationService } from "@/services/notificationService";
 import { AppNotification, NotificationType } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Bell, BellOff, CheckCheck, Loader2, Calendar, Award, AlertCircle, Info, Leaf } from "lucide-react";
+import { Bell, BellOff, CheckCheck, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TYPE_CONFIG: Record<NotificationType, { icon: string; color: string; bg: string }> = {
@@ -55,43 +54,42 @@ const NotificationsPage = () => {
   };
 
   const FILTER_TYPES: Array<NotificationType | "ALL"> = ["ALL", "EVENT", "BADGE", "COMPLAINT", "NGO_RECOMMENDATION", "SYSTEM"];
-
   const filtered = notifications.filter(n => filterType === "ALL" || n.type === filterType);
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  if (loading) return <div className="flex justify-center py-20"><Loader2 className="h-10 w-10 animate-spin text-green-600" /></div>;
+  if (loading) return <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-green-600" /></div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-green-700 to-emerald-700 text-white py-8 px-4">
-        <div className="container mx-auto max-w-2xl flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Bell className="h-7 w-7" />
+      {/* Compact header */}
+      <div className="bg-gradient-to-r from-green-700 to-emerald-700 text-white py-6 px-8">
+        <div className="flex items-center justify-between max-w-3xl">
+          <div className="flex items-center gap-2.5">
+            <Bell className="h-5 w-5" />
             <div>
-              <h1 className="text-2xl font-extrabold">Notifications</h1>
+              <h1 className="text-[22px] font-extrabold leading-tight">Notifications</h1>
               {unreadCount > 0 && (
-                <p className="text-green-200 text-sm">{unreadCount} unread</p>
+                <p className="text-green-200 text-xs">{unreadCount} unread</p>
               )}
             </div>
           </div>
           {unreadCount > 0 && (
             <Button onClick={handleMarkAllRead} variant="ghost"
-              className="text-white/80 hover:text-white hover:bg-white/10 text-sm gap-1.5">
-              <CheckCheck className="h-4 w-4" /> Mark all read
+              className="text-white/80 hover:text-white hover:bg-white/10 text-xs gap-1 h-8">
+              <CheckCheck className="h-3.5 w-3.5" /> Mark all read
             </Button>
           )}
         </div>
       </div>
 
-      <div className="container mx-auto max-w-2xl px-4 py-6">
+      <div className="px-8 py-5 max-w-3xl">
         {/* Type filter pills */}
-        <div className="flex gap-2 overflow-x-auto pb-3 mb-5">
+        <div className="flex gap-1.5 overflow-x-auto pb-2.5 mb-4">
           {FILTER_TYPES.map(type => {
             const cfg = type !== "ALL" ? TYPE_CONFIG[type] : null;
             return (
               <button key={type} onClick={() => setFilterType(type)}
-                className={cn("px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border",
+                className={cn("px-2.5 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all border",
                   filterType === type
                     ? "bg-green-600 text-white border-green-600"
                     : "bg-white text-gray-600 border-gray-200 hover:border-green-300")}>
@@ -103,42 +101,42 @@ const NotificationsPage = () => {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">
-            <BellOff className="h-12 w-12 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">No notifications</p>
-            <p className="text-sm mt-1">You're all caught up! Join events to receive updates.</p>
+          <div className="text-center py-12 text-gray-400">
+            <BellOff className="h-10 w-10 mx-auto mb-2 opacity-30" />
+            <p className="font-medium text-sm">No notifications</p>
+            <p className="text-xs mt-1">You're all caught up! Join events to receive updates.</p>
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {filtered.map(notif => {
               const cfg = TYPE_CONFIG[notif.type] || TYPE_CONFIG.SYSTEM;
               return (
                 <div key={notif.id}
                   onClick={() => !notif.isRead && handleMarkRead(notif.id)}
                   className={cn(
-                    "flex gap-4 p-4 rounded-xl border transition-all cursor-pointer hover:shadow-sm",
+                    "flex gap-3 p-3 rounded-xl border transition-all cursor-pointer hover:shadow-sm",
                     notif.isRead
                       ? "bg-white border-gray-100 opacity-70"
                       : "bg-white border-green-200 shadow-sm"
                   )}>
                   {/* Type icon */}
-                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-lg", cfg.bg)}>
+                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-base", cfg.bg)}>
                     {cfg.icon}
                   </div>
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
-                      <p className={cn("text-sm font-semibold", notif.isRead ? "text-gray-600" : "text-gray-900")}>
+                      <p className={cn("text-xs font-semibold", notif.isRead ? "text-gray-600" : "text-gray-900")}>
                         {notif.title}
                       </p>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-xs text-gray-400">{timeAgo(notif.createdAt)}</span>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="text-[10px] text-gray-400">{timeAgo(notif.createdAt)}</span>
                         {!notif.isRead && (
-                          <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
                         )}
                       </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{notif.message}</p>
+                    <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2">{notif.message}</p>
                   </div>
                 </div>
               );

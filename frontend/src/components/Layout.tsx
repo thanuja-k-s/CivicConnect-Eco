@@ -1,11 +1,15 @@
-import { ReactNode } from "react";
-import Navbar from "@/components/Navbar";
+import { ReactNode, useState } from "react";
+import Sidebar from "@/components/Sidebar";
 
-const Layout = ({ children }: { children: ReactNode }) => (
-  <div className="min-h-screen flex flex-col">
-    <Navbar />
-    <main className="flex-1">{children}</main>
-  </div>
-);
+const Layout = ({ children }: { children: ReactNode }) => {
+  return (
+    <div className="layout-root">
+      <Sidebar />
+      <main className="layout-main">
+        {children}
+      </main>
+    </div>
+  );
+};
 
 export default Layout;

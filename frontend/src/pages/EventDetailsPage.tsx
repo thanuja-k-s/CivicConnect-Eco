@@ -122,7 +122,7 @@ const EventDetailsPage = () => {
     );
   };
 
-  if (loading) return <div className="flex justify-center py-20"><Loader2 className="h-10 w-10 animate-spin text-green-600" /></div>;
+  if (loading) return <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-green-600" /></div>;
   if (!event) return null;
 
   const isFull = event.currentParticipants >= event.maxParticipants;
@@ -134,18 +134,18 @@ const EventDetailsPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-green-700 to-emerald-600 text-white">
-        <div className="container mx-auto max-w-3xl px-4 pt-6 pb-10">
-          <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10 mb-4 -ml-2"
+        <div className="px-8 pt-5 pb-8 max-w-4xl">
+          <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10 mb-3 -ml-2 h-7 text-xs"
             onClick={() => navigate("/events")}>
-            <ArrowLeft className="mr-1 h-4 w-4" /> Back to Events
+            <ArrowLeft className="mr-1 h-3.5 w-3.5" /> Back to Events
           </Button>
-          <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="flex items-start justify-between gap-3 flex-wrap">
             <div className="flex-1">
-              <p className="text-xs text-green-200 font-medium mb-1">{event.eventType?.replace(/_/g, " ")}</p>
-              <h1 className="text-2xl md:text-3xl font-extrabold">{event.title}</h1>
-              {event.ngoName && <p className="text-sm text-green-200 mt-1">Organized by {event.ngoName}</p>}
+              <p className="text-[10px] text-green-200 font-medium mb-0.5">{event.eventType?.replace(/_/g, " ")}</p>
+              <h1 className="text-xl md:text-2xl font-extrabold">{event.title}</h1>
+              {event.ngoName && <p className="text-xs text-green-200 mt-0.5">Organized by {event.ngoName}</p>}
             </div>
-            <span className={cn("text-xs px-3 py-1 rounded-full font-bold",
+            <span className={cn("text-[10px] px-2.5 py-0.5 rounded-full font-bold",
               event.status === "UPCOMING" ? "bg-blue-400/20 text-blue-100 border border-blue-300" :
               event.status === "ONGOING" ? "bg-green-400/20 text-green-100 border border-green-300" : "bg-gray-400/20 text-gray-100")}>
               {event.status}
@@ -154,7 +154,7 @@ const EventDetailsPage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto max-w-3xl px-4 -mt-6">
+      <div className="px-8 -mt-5 max-w-4xl">
         {/* Info card */}
         <Card className="shadow-lg border-0 mb-5">
           <CardContent className="p-5 grid grid-cols-2 md:grid-cols-4 gap-4">

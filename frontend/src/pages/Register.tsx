@@ -62,26 +62,26 @@ const Register = () => {
   const isNgo = form.role === "ngo";
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-muted px-4 py-12">
-      <Card className="w-full max-w-md shadow-xl animate-fade-in-up">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-muted px-4 py-8">
+      <Card className="w-full max-w-sm shadow-lg animate-fade-in-up">
+        <CardHeader className="text-center pb-4">
+          <div className="flex justify-center mb-1.5">
             {isNgo
-              ? <Leaf className="h-12 w-12 text-green-600" />
-              : <Shield className="h-12 w-12 text-saffron" />}
+              ? <Leaf className="h-9 w-9 text-green-600" />
+              : <Shield className="h-9 w-9 text-saffron" />}
           </div>
-          <CardTitle className="text-2xl">Create Account</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl">Create Account</CardTitle>
+          <CardDescription className="text-xs">
             {isNgo
               ? "Register as an NGO / Eco Club representative"
               : "Register as a Citizen or Worker"}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="pt-0">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {(["name", "email", "phone", "password"] as const).map((field) => (
               <div key={field}>
-                <Label htmlFor={field} className="capitalize">{field}</Label>
+                <Label htmlFor={field} className="capitalize text-xs">{field}</Label>
                 <Input
                   id={field}
                   type={field === "password" ? "password" : field === "email" ? "email" : "text"}
@@ -89,14 +89,15 @@ const Register = () => {
                   onChange={(e) => update(field, e.target.value)}
                   placeholder={field === "phone" ? "10-digit number" : `Enter ${field}`}
                   required
+                  className="h-9 text-sm"
                 />
-                {errors[field] && <p className="text-destructive text-xs mt-1">{errors[field]}</p>}
+                {errors[field] && <p className="text-destructive text-[10px] mt-0.5">{errors[field]}</p>}
               </div>
             ))}
             <div>
-              <Label>Register As</Label>
+              <Label className="text-xs">Register As</Label>
               <Select value={form.role} onValueChange={(v) => update("role", v)}>
-                <SelectTrigger className="bg-popover"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="bg-popover h-9 text-sm"><SelectValue /></SelectTrigger>
                 <SelectContent className="bg-popover">
                   <SelectItem value="citizen">🧑 Citizen</SelectItem>
                   <SelectItem value="worker">👷 Government Worker</SelectItem>
@@ -106,12 +107,12 @@ const Register = () => {
             </div>
 
             {isNgo && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-xs text-green-700">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-2.5 text-[10px] text-green-700">
                 <p className="font-semibold mb-1">🌿 NGO Registration Process:</p>
                 <ol className="list-decimal list-inside space-y-0.5 text-green-600">
                   <li>Create your account here</li>
                   <li>Complete NGO registration details</li>
-                  <li>Admin reviews & approves (1-3 days)</li>
+                  <li>Admin reviews &amp; approves (1-3 days)</li>
                   <li>Start creating events!</li>
                 </ol>
               </div>
@@ -119,14 +120,14 @@ const Register = () => {
 
             <Button
               type="submit"
-              className={`w-full ${isNgo ? "bg-green-600 hover:bg-green-700" : "bg-saffron hover:bg-saffron/90 text-saffron-foreground"} text-white`}
+              className={`w-full h-9 text-sm ${isNgo ? "bg-green-600 hover:bg-green-700" : "bg-saffron hover:bg-saffron/90 text-saffron-foreground"} text-white`}
               disabled={loading}
             >
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {loading && <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />}
               {isNgo ? "🌿 Register & Set Up NGO" : "Register"}
             </Button>
           </form>
-          <p className="text-center text-sm text-muted-foreground mt-4">
+          <p className="text-center text-xs text-muted-foreground mt-3">
             Already have an account? <Link to="/login" className="text-saffron font-semibold hover:underline">Login</Link>
           </p>
         </CardContent>

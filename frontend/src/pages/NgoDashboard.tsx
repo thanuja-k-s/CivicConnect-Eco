@@ -111,29 +111,29 @@ const NgoDashboard = () => {
   const totalParticipants = events.reduce((sum, e) => sum + (e.currentParticipants || 0), 0);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="px-8 py-6">
       {/* Header */}
-      <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
-            <Leaf className="h-9 w-9 text-white" />
+      <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-md">
+            <Leaf className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{ngo.name}</h1>
-            <p className="text-sm text-gray-500">{ngo.organizationType.replace("_", " ")} · {ngo.registrationNumber}</p>
-            <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700 mt-1">
-              <CheckCircle2 className="h-3 w-3" /> ACTIVE
+            <h1 className="text-xl font-bold text-gray-900">{ngo.name}</h1>
+            <p className="text-xs text-gray-500">{ngo.organizationType.replace("_", " ")} · {ngo.registrationNumber}</p>
+            <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 mt-0.5">
+              <CheckCircle2 className="h-2.5 w-2.5" /> ACTIVE
             </span>
           </div>
         </div>
         <Button onClick={() => navigate("/ngo/events/create")}
-          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg">
-          <Plus className="mr-2 h-4 w-4" /> Create New Event
+          className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-md h-9 text-sm">
+          <Plus className="mr-1.5 h-3.5 w-3.5" /> Create New Event
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         {[
           { label: "Total Events", value: events.length, icon: Calendar, color: "text-blue-600", bg: "bg-blue-50" },
           { label: "Upcoming", value: upcoming, icon: Clock, color: "text-amber-600", bg: "bg-amber-50" },
@@ -141,12 +141,12 @@ const NgoDashboard = () => {
           { label: "Completed", value: completed, icon: CheckCircle2, color: "text-green-600", bg: "bg-green-50" },
         ].map(({ label, value, icon: Icon, color, bg }) => (
           <Card key={label} className="border-0 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="pt-5 pb-4">
-              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-3", bg)}>
-                <Icon className={cn("h-5 w-5", color)} />
+            <CardContent className="pt-4 pb-3 px-4">
+              <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center mb-2", bg)}>
+                <Icon className={cn("h-4 w-4", color)} />
               </div>
-              <p className="text-2xl font-extrabold text-gray-900">{value}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+              <p className="text-xl font-extrabold text-gray-900">{value}</p>
+              <p className="text-[10px] text-gray-500 mt-0.5">{label}</p>
             </CardContent>
           </Card>
         ))}

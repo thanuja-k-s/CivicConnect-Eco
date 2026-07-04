@@ -53,33 +53,33 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-muted px-4 py-12">
-      <Card className="w-full max-w-md shadow-xl animate-fade-in-up">
-        <CardHeader className="text-center">
-          <Shield className="h-12 w-12 text-saffron mx-auto mb-2" />
-          <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Login to your CivicConnect Eco account</CardDescription>
+    <div className="min-h-screen flex items-center justify-center bg-muted px-4 py-8">
+      <Card className="w-full max-w-sm shadow-lg animate-fade-in-up">
+        <CardHeader className="text-center pb-4">
+          <Shield className="h-9 w-9 text-saffron mx-auto mb-1.5" />
+          <CardTitle className="text-xl">Welcome Back</CardTitle>
+          <CardDescription className="text-xs">Login to your CivicConnect Eco account</CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="pt-0">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="citizen@demo.com" required />
+              <Label htmlFor="email" className="text-xs">Email</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="citizen@demo.com" required className="h-9 text-sm" />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter any password" required />
+              <Label htmlFor="password" className="text-xs">Password</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter any password" required className="h-9 text-sm" />
             </div>
             <div className="flex items-center gap-2">
-              <Checkbox id="remember" />
-              <Label htmlFor="remember" className="text-sm font-normal">Remember me</Label>
+              <Checkbox id="remember" className="h-3.5 w-3.5" />
+              <Label htmlFor="remember" className="text-xs font-normal">Remember me</Label>
             </div>
-            <Button type="submit" className="w-full bg-saffron text-saffron-foreground hover:bg-saffron/90" disabled={loading}>
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" className="w-full bg-saffron text-saffron-foreground hover:bg-saffron/90 h-9 text-sm" disabled={loading}>
+              {loading && <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />}
               Login
             </Button>
           </form>
-          <p className="text-center text-sm text-muted-foreground mt-4">
+          <p className="text-center text-xs text-muted-foreground mt-3">
             Don't have an account? <Link to="/register" className="text-saffron font-semibold hover:underline">Register</Link>
           </p>
         </CardContent>
